@@ -327,6 +327,10 @@ classdef spk_demoGUI < hgsetget
             [G.res.spikest G.res.fit G.res.drift] = spk_est(G.data.calcium,p);
             
             % display
+            if ~ishandle(G.grob.display) % result figure was closed
+                G.grob.display = fn_figure('MLspike demo - Result');
+                set(G.grob.display,'numbertitle','off')
+            end
             hf = G.grob.display; clf(hf)
             switch p.algo.estimate
                 case 'MAP'

@@ -180,6 +180,7 @@ for i=1:ntrial
     if ~pax.dosaveprecomp || ~okf
         par.dt = dt(i);
         [n{i} fit{i} dum dum dum drift{i}] = tps_mlspikes(calcium{i},par); %#ok<ASGLU>
+        n{i} = double(n{i}); % n{i} is an uint8, we need to convert to double before performing mutiplication, sum, etc. on it
     end
     nn{i} = round(n{i}*par.a*100);
     if dodisplay && (~pax.dosaveprecomp || ~okf || (i==ntrial))

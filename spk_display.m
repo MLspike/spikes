@@ -308,7 +308,7 @@ end
 xx = double(calcium{1});
 avgcalcium = mean(xx);
 dodf = (avgcalcium(1)>.9 && avgcalcium(1)<1.1);
-Flabel = fn_switch(dodf,'\DeltaF/F','F');
+Flabel = fn_switch(dodf,'F/F_0','F');
 
 % Axis size and spike positions
 if isempty(ylim)

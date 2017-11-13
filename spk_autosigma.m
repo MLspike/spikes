@@ -100,6 +100,9 @@ for k=1:ntrial
         sigmaest(k) = rms(diff(x))/sqrt(2);
     else
         fnyquist = 1/(2*dtk);
+        if fnyquist < 1.5*psig.freqs(1)
+            error 'sampling rate is too low for proper estimation of the noise'
+        end
         if isscalar(psig.freqs), psig.freqs(2) = fnyquist; end
         xf = fft(x)/sqrt(ntk);
         freqs = abs(fn_fftfrequencies(ntk,1/dtk,'centered'));

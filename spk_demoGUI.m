@@ -323,7 +323,7 @@ classdef spk_demoGUI < hgsetget
             p = G.pest;
             
             % estimate
-            fn_watch(G.grob.hf,'startnow')
+            c = fn_watch(G.grob.hf,'startnow');
             [G.res.spikest G.res.fit G.res.drift] = spk_est(G.data.calcium,p);
             
             % display
@@ -348,7 +348,6 @@ classdef spk_demoGUI < hgsetget
                         ylabel(ha,sprintf('sample %i/%i',ksamp,p.algo.nsample))
                     end
             end
-            fn_watch(G.grob.hf,'stop')
         end
         function eraseresult(G)
             clf(G.grob.display)

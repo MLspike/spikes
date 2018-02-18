@@ -28,7 +28,7 @@ function [stats hl] = spk_display(dt,spikes,calcium,varargin)
 %           'gridsize',[nrow ncol]  size of grid
 %           'ncol',ncol         number of columns
 %           'burstdelay',value  specify time length for grouping spikes
-%                               into a single number
+%                               into a single number (0 for no grouping)
 %           'calciumevents' of 'calciumeventsfull'
 %           'title',titl
 %           'toptitle',titl

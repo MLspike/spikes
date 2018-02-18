@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>MLspike</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2017-01-07"><meta name="DC.source" content="index.m"><style type="text/css">
+      --><title>MLspike</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2018-02-18"><meta name="DC.source" content="index.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -23,7 +23,7 @@ a:visited { color:#004aa0; text-decoration:none; }
 
 p { padding:0px; margin:0px 0px 20px; }
 img { padding:0px; margin:0px 0px 20px; border:none; }
-p img, pre img, tt img, li img { margin-bottom:0px; } 
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
 
 ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
 ul li { padding:0px; margin:0px 0px 7px 0px; }
@@ -38,11 +38,12 @@ ol li ul li { list-style:square; }
 
 .content { font-size:1.2em; line-height:140%; padding: 20px; }
 
-pre, tt, code { font-size:12px; }
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
 pre { margin:0px 0px 20px; }
-pre.error { color:red; }
 pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
 pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
 
 @media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
 
@@ -65,71 +66,91 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>MLspike</h1><!--introduction--><p><img vspace="5" hspace="5" src="thumbnail300x200.png" alt=""> </p><p>MLspike_ is an algorithm to reconstruct neuronal spiking activity from noisy calcium recordings. Its description and benchmarking can be found in <a href="http://www.nature.com/articles/ncomms12190">(Deneux et al. 2016)</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Overview</a></li><li><a href="#3">Demo</a></li></ul></div><h2>Overview<a name="1"></a></h2><p>Main functions are:</p><p><table>
-<tr><td> tps_mlspikes         <td> estimate spikes from calcium (note the function spk_est, which is a small wrapper of tps_mlspikes)
-<tr><td> spk_autocalibration  <td> auto-calibration of parameters A, tau, sigma
-<tr><td> spk_autosigma        <td> auto-calibration of parameter sigma
-<tr><td> spk_gentrain         <td> generate simulated spike train
-<tr><td> spk_calcium          <td> generate simulated calcium signal
-<tr><td> spk_display          <td> display spikes and calcium signals together
-<tr><td> spk_calibration      <td> calibration, i.e. estimate the values of physiological parameters based on true spikes and recorded calcium signals
-</table></p><p>Simulation and estimation run with parameters, default parameters are easily obtained, for example:</p><pre class="language-matlab">par = tps_mlspikes(<span class="string">'par'</span>);`.
-</pre><p>Help for each function can be provided by typing `help function_name`. Additional help can be found in the Help browser: type `doc`, then go to 'Supplemental Software' &gt; 'MLspike Toolbox'.</p><h2>Demo<a name="3"></a></h2><p>Two demos exist:</p><p><b><a href="matlab:edit('spk_demoGUI')">spk_demoGUI</a></b> This script runs MLspike (but not the autocalibration) on simulated data, with a graphic interface that lets user play with the simulation and estimation parameters. It provides an immediate understanding of MLspike abilities, and of how does estimation accuracy depend on the characteristics of the data and on estimation parameters.</p><p><b><a href="matlab:edit('spk_demo')">spk_demo</a></b> This script generates simulated data and runs successively the MLspike and autocalibration algorithms on it; use it to learn how to use the different functions; comments in the code indicate how to replace the simulated data by your own data. <a href="spk_demo.html">See here the script output.</a></p><p>A more complex script can be studied as well to better understand the algorithms:</p><p><b><a href="matlab:edit('spk_factorbox')">spk_factorbox</a></b> This script generates the factor box that is part of the manuscript supplementary material. <a href="spk_factorbox.html">See here the script output.</a></p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+  </style></head><body><div class="content"><h1>MLspike</h1><!--introduction--><p><img vspace="5" hspace="5" src="thumbnail300x200.png" alt=""> </p><p><i>MLspike</i> is an algorithm to reconstruct neuronal spiking activity from noisy calcium recordings. Its description and benchmarking can be found in <a href="http://www.nature.com/articles/ncomms12190">(Deneux et al. 2016)</a>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Requirements</a></li><li><a href="#2">Getting started</a></li><li><a href="#3">Main functions</a></li><li><a href="#5">Going further</a></li></ul></div><h2>Requirements<a name="1"></a></h2><p><i>MLspike</i> requires the <a href="https://github.com/MLspike/brick">brick</a> toolbox.</p><h2>Getting started<a name="2"></a></h2><p><i>MLspike</i> takes calcium signals as an input and return spike train estimations. It can optionally return spike probabilities instead of a unique maximum a posteriori spike train, or random spike trains drawn from the a posteriori distribution.</p><p><i>MLspike</i> requires some parameters to be set, in particular those describing the physiological link between spikes and calcium fluorescence dynamics. Some of these parameters can be estimated by a second <i>autocalibration</i> algorithm from the data itself. <i>This autocalibration algorithm however requires the data to be high-quality</i>, typically where single-spike transients are clearly identifiable by eye. When working with low or moderate quality recording, users should prefer setting parameters manually or taking values from the litterature (see <a href="https://media.nature.com/original/nature-assets/ncomms/2016/160719/ncomms12190/extref/ncomms12190-s1.pdf">Supplemental Figure 6a</a> in the <i>MLspike</i> paper).</p><p>Setting <i>MLspike</i> parameters requires understanding how each parameter affects the estimation. The best entry point for learning how to use the algorithm is therefore the graphical interface <b><a href="matlab:edit('spk_demoGUI')"><tt>spk_demoGUI</tt></a></b> that lets the user try the algorithm on simulation data or its own data and easily check the effect of changing parameter values.</p><p>Then it is recommended to follow the script <b><a href="matlab:edit('spk_demo')"><tt>spk_demo</tt></a></b> to learn how to call the algorithm and other associated functions. In particular the script first runs MLspike alone, then in combination with the autocalibration algorithms. Matlab-published output of this script can be seen <a href="spk_demo.html">here</a>.</p><h2>Main functions<a name="3"></a></h2><p>Main functions are:</p><p><table>
+<tr><td style="font-family: Monospace;"> tps_mlspikes         <td> estimate spikes from calcium (note the function spk_est, which is a small wrapper of tps_mlspikes)
+<tr><td style="font-family: Monospace;"> spk_autocalibration  <td> auto-calibration of parameters A, tau, sigma
+<tr><td style="font-family: Monospace;"> spk_autosigma        <td> auto-calibration of parameter sigma
+<tr><td style="font-family: Monospace;"> spk_gentrain         <td> generate simulated spike train
+<tr><td style="font-family: Monospace;"> spk_calcium          <td> generate simulated calcium signal
+<tr><td style="font-family: Monospace;"> spk_display          <td> display spikes and calcium signals together
+<tr><td style="font-family: Monospace;"> spk_calibration      <td> calibration, i.e. estimate the values of physiological parameters based on true spikes and recorded calcium signals
+</table></p><p>Simulation and estimation run with parameters, default parameters are easily obtained, for example:</p><pre class="language-matlab">par = tps_mlspikes(<span class="string">'par'</span>);
+</pre><p>Help for each function can be provided by typing <tt>help function_name</tt>.</p><h2>Going further<a name="5"></a></h2><p>A more complex script can be studied as well to better understand the algorithms and on which factors their estimation quality depend: <b><a href="matlab:edit('spk_demoGUI')"><tt>spk_factorbox</tt></a></b> generates the <a href="https://media.nature.com/original/nature-assets/ncomms/2016/160719/ncomms12190/extref/ncomms12190-s1.pdf">Factor Box</a> in the <i>MLspike</i> paper. Matlab-published output of this script can also be seen <a href="spk_factorbox.html">here</a>.</p><p><i>MLspike</i> has obtained a very good score at the <a href="https://www.biorxiv.org/content/early/2017/08/19/177956"><i>Spikefinder</i></a> competition. The code used for this competition can be found in the 'SpikeFinder' sub-folder (file <tt>spf_main_script.m</tt>).</p><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% MLspike
 % 
 % <<thumbnail300x200.png>>
 % 
-% MLspike_ is an algorithm to reconstruct neuronal spiking activity from
+% _MLspike_ is an algorithm to reconstruct neuronal spiking activity from
 % noisy calcium recordings. Its description and benchmarking can be found
 % in <http://www.nature.com/articles/ncomms12190 (Deneux et al. 2016)>.
-%
-%% Overview
+
+%% Requirements
+% _MLspike_ requires the <https://github.com/MLspike/brick brick> toolbox.
+
+%% Getting started
+% _MLspike_ takes calcium signals as an input and return spike train
+% estimations. It can optionally return spike probabilities instead of a
+% unique maximum a posteriori spike train, or random spike trains drawn
+% from the a posteriori distribution.
+% 
+% _MLspike_ requires some parameters to be set, in particular those
+% describing the physiological link between spikes and calcium fluorescence
+% dynamics. Some of these parameters can be estimated by a second
+% _autocalibration_ algorithm from the data itself. _This autocalibration
+% algorithm however requires the data to be high-quality_, typically where
+% single-spike transients are clearly identifiable by eye. When working
+% with low or moderate quality recording, users should prefer setting
+% parameters manually or taking values from the litterature (see
+% <https://media.nature.com/original/nature-assets/ncomms/2016/160719/ncomms12190/extref/ncomms12190-s1.pdf
+% Supplemental Figure 6a> in the _MLspike_ paper).
+% 
+% Setting _MLspike_ parameters requires understanding how each parameter
+% affects the estimation. The best entry point for learning how to use the
+% algorithm is therefore the graphical interface
+% *<matlab:edit('spk_demoGUI') |spk_demoGUI|>* that lets the user try the
+% algorithm on simulation data or its own data and easily check the effect
+% of changing parameter values.
+% 
+% Then it is recommended to follow the script *<matlab:edit('spk_demo')
+% |spk_demo|>* to learn how to call the algorithm and other associated
+% functions. In particular the script first runs MLspike alone, then in
+% combination with the autocalibration algorithms. Matlab-published output
+% of this script can be seen <spk_demo.html here>.
+
+%% Main functions
 % Main functions are:
 %
 % <html><table>
-% <tr><td> tps_mlspikes         <td> estimate spikes from calcium (note the function spk_est, which is a small wrapper of tps_mlspikes)
-% <tr><td> spk_autocalibration  <td> auto-calibration of parameters A, tau, sigma
-% <tr><td> spk_autosigma        <td> auto-calibration of parameter sigma
-% <tr><td> spk_gentrain         <td> generate simulated spike train
-% <tr><td> spk_calcium          <td> generate simulated calcium signal
-% <tr><td> spk_display          <td> display spikes and calcium signals together
-% <tr><td> spk_calibration      <td> calibration, i.e. estimate the values of physiological parameters based on true spikes and recorded calcium signals
+% <tr><td style="font-family: Monospace;"> tps_mlspikes         <td> estimate spikes from calcium (note the function spk_est, which is a small wrapper of tps_mlspikes)
+% <tr><td style="font-family: Monospace;"> spk_autocalibration  <td> auto-calibration of parameters A, tau, sigma
+% <tr><td style="font-family: Monospace;"> spk_autosigma        <td> auto-calibration of parameter sigma
+% <tr><td style="font-family: Monospace;"> spk_gentrain         <td> generate simulated spike train
+% <tr><td style="font-family: Monospace;"> spk_calcium          <td> generate simulated calcium signal
+% <tr><td style="font-family: Monospace;"> spk_display          <td> display spikes and calcium signals together
+% <tr><td style="font-family: Monospace;"> spk_calibration      <td> calibration, i.e. estimate the values of physiological parameters based on true spikes and recorded calcium signals
 % </table></html>
 %
 % Simulation and estimation run with parameters, default parameters are easily obtained, for example: 
 %
-%   par = tps_mlspikes('par');`.
+%   par = tps_mlspikes('par');
 
 %%
-% Help for each function can be provided by typing `help function_name`.
-% Additional help can be found in the Help browser: type `doc`, then go to
-% 'Supplemental Software' > 'MLspike Toolbox'.
+% Help for each function can be provided by typing |help function_name|.
+
+%% Going further
+% A more complex script can be studied as well to better understand the
+% algorithms and on which factors their estimation quality depend:
+% *<matlab:edit('spk_demoGUI') |spk_factorbox|>* generates the
+% <https://media.nature.com/original/nature-assets/ncomms/2016/160719/ncomms12190/extref/ncomms12190-s1.pdf
+% Factor Box> in the _MLspike_ paper. Matlab-published output of this
+% script can also be seen <spk_factorbox.html here>.
 %
-%% Demo
-% Two demos exist:
-% 
-% *<matlab:edit('spk_demoGUI') spk_demoGUI>*
-% This script runs MLspike (but not the autocalibration) on 
-% simulated data, with a graphic interface that lets user play with
-% the simulation and estimation parameters.
-% It provides an immediate understanding of MLspike abilities, and
-% of how does estimation accuracy depend on the characteristics of
-% the data and on estimation parameters.
-%
-% *<matlab:edit('spk_demo') spk_demo>*
-% This script generates simulated data and runs successively the
-% MLspike and autocalibration algorithms on it; use it to learn how to
-% use the different functions; comments in the code indicate how to
-% replace the simulated data by your own data.
-% <spk_demo.html See here the script output.>
-%
-% A more complex script can be studied as well to better understand the algorithms:
-%
-% *<matlab:edit('spk_factorbox') spk_factorbox>*
-% This script generates the factor box that is part of the manuscript
-% supplementary material.
-% <spk_factorbox.html See here the script output.>
+% _MLspike_ has obtained a very good score at the
+% <https://www.biorxiv.org/content/early/2017/08/19/177956 _Spikefinder_>
+% competition. The code used for this competition can be found in the
+% 'SpikeFinder' sub-folder (file |spf_main_script.m|).
+
            
 
 ##### SOURCE END #####

@@ -34,6 +34,13 @@ function varargout = spk_autosigma(varargin)
 %
 % If parameter 'donormalize' is set to true (this is the default), calcium
 % is replaced by calcium/mean(calcium) before noise level estimation.
+% 
+% Three preset are available: 'white' assumes a pure white noise
+% (estimation will be based on noise RMS in frequencies above 3Hz),
+% 'correlated' assumes some noise correlation in the highest frequencies
+% (using noise RMS in frequencies between 3Hz and 20Hz), 'correlatedbias'
+% assumes that the later setting overestimates the level of noise and
+% down-scales the estimation by a bias of 0.7.
 
 % Default parameter
 if ischar(varargin{1})
@@ -73,7 +80,7 @@ if ischar(varargin{1}) && fn_ismemberstr(varargin{1},{'white' 'correlated' 'corr
             psig.freqs = [3 20];
         case 'correlatedbias'
             psig.freqs = [3 20];
-            psig.bias = 0.6894;
+            psig.bias = 0.7;
     end
 end
 

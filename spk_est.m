@@ -36,7 +36,7 @@ else
     else
         par = fn_structmerge(defaultpar,par);
     end
-    [n fit parest dum dum drift] = tps_mlspikes(calcium,par); %#ok<*ASGLU>
+    [n, fit, parest, ~, ~, drift] = tps_mlspikes(calcium,par); %#ok<*ASGLU>
     switch lower(par.algo.estimate)
         case 'map'
             spk = fn_timevector(n,par.dt);

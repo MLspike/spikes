@@ -107,8 +107,10 @@ if iscell(x)
     if nout>=3, varargout{3} = [varargout{3}{:}]; end
     if nout>=4, varargout{4} = [varargout{4}{:}]; end
     if ~xiscell
-        dim = fn_switch(isvector(varargin{1}),2,3);
-        for i=setdiff(1:nout,[3 4]), varargout{i} = cat(dim,varargout{i}{:}); end
+        for i=setdiff(1:nout,[3 4])
+            dim = fn_switch(isvector(varargout{i}{1}),2,3);
+            varargout{i} = cat(dim,varargout{i}{:}); 
+        end
     end
     return
 end

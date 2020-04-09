@@ -66,7 +66,7 @@ classdef spk_demoGUI < hgsetget
                 'noiseseed1','xstepper 1 0 1000', ...
                 'rate',     'double', ...
                 'T',        'double', ...
-                'mode',     {{'fix-rate' 'vary-rate' 'bursty'}}, ...
+                'mode',     {{'periodic' 'fix-rate' 'vary-rate' 'bursty'}}, ...
                 ... CALCIUM SIM
                 'calcium__simulation','label', ...
                 'noiseseed2','xstepper 1 0 1000', ...
@@ -200,7 +200,7 @@ classdef spk_demoGUI < hgsetget
                 F = {'owndata' 'calcium' 'dtown' 'real__spike__times'};
                 doown = X.use__my__own__data;
                 for i=1:length(xx)
-                    use = fn_switch(ismember(names{i},F0) || (ismember(names{i},F)==doown));
+                    use = onoff(ismember(names{i},F0) || (ismember(names{i},F)==doown));
                     set(xx(i).hname,'enable',use)
                     if ~isempty(xx(i).hval), set(xx(i).hval,'enable',use), end
                 end
@@ -220,19 +220,19 @@ classdef spk_demoGUI < hgsetget
             F = {'saturation' 'hill' 'p2' 'p3'};
             for i=1:length(F)
                 xi = xx(strcmp(names,F{i}));
-                set([xi.hname xi.hval],'enable',fn_switch(en(i)))
+                set([xi.hname xi.hval],'enable',onoff(en(i)))
             end
             % number of drifts only if drift amplitude
             if strcmp(flag,'cal')
                 xi = xx(strcmp(names,'drift__n'));
-                set([xi.hname xi.hval],'enable',fn_switch(X.drift__amp>0))
+                set([xi.hname xi.hval],'enable',onoff(X.drift__amp>0))
             end
             % discretization parameters that are really needed
             if strcmp(flag,'est')
                 xi = xx(strcmp(names,'nb'));
-                set([xi.hname xi.hval],'enable',fn_switch(X.drift>0))
+                set([xi.hname xi.hval],'enable',onoff(X.drift>0))
                 xi = xx(strcmp(names,'np'));
-                set([xi.hname xi.hval],'enable',fn_switch(X.ton>0))
+                set([xi.hname xi.hval],'enable',onoff(X.ton>0))
             end
         end
     end
@@ -272,18 +272,37 @@ classdef spk_demoGUI < hgsetget
         function ok = getowndata(G)
             try
                 calcium = evalin('base',G.Xdat.calcium);
-                ok = isnumeric(calcium) && isvector(calcium) && isscalar(G.Xdat.dtown);
+                ok = isnumeric(calcium) && ismatrix(calcium) && isscalar(G.Xdat.dtown);
                 if ok && ~isempty(G.Xdat.real__spike__times)
+                    [nt, nx] = size(cacium); 
+                    if nt==1, calcium=calcium'; end
                     spikes = evalin('base',G.Xdat.real__spike__times);
-                    ok = isnumeric(spikes) && (isempty(spikes) || isvector(spikes));
-                    if ok, G.data.spikes = {spikes}; end
+                    if iscell(spikes)
+                        ok = (length(spikes)==nx);
+                    elseif ~isnumeric(spikes)
+                        ok = false;
+                    elseif isempty(spikes)
+                        ok = true;
+                    elseif ismatrix(spikes)
+                        ok = all(size(spikes)==[nt nx]);
+                        if ~ok && all(size(spikes)==[nx nt])
+                            spikes = spikes';
+                            [nt, nx] = deal(nx,nt);
+                            ok = true;
+                        end
+                    else
+                        ok = false;
+                    end
+                    if ok
+                        if ~iscell(spikes), G.data.spikes = {spikes}; end
+                    end
                 else
                     G.data.spikes = {};
                 end
                 if ok
                     G.data.calcium = calcium; 
                 else
-                    [G.data.calcium G.data.spikes] = deal([],{});
+                    [G.data.calcium, G.data.spikes] = deal([],{});
                 end
             catch
                 ok = false;
@@ -324,7 +343,7 @@ classdef spk_demoGUI < hgsetget
             
             % estimate
             c = fn_watch(G.grob.hf,'startnow');
-            [G.res.spikest G.res.fit G.res.drift] = spk_est(G.data.calcium,p);
+            [G.res.spikest, G.res.fit, G.res.drift] = spk_est(G.data.calcium,p);
             
             % display
             if ~ishandle(G.grob.display) % result figure was closed
